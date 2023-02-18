@@ -15,10 +15,13 @@ func NewDiscountCalculator(minimumPurchaseAmount int, discountAmount int) *Disco
 }
 
 func (c *DiscountCalculator) Calculate(purchaseAmount int) int {
-
 	// 購入金額が最低購入金額よりも高い場合は割引が適用される
 	if purchaseAmount > c.minimumPurchaseAmount {
-		return purchaseAmount - c.discountAmount
+
+		// 乗数(自動的に丸められる)
+		multiplier := purchaseAmount / c.minimumPurchaseAmount
+
+		return purchaseAmount - (c.discountAmount * multiplier)
 	}
 	// それ以外は購入金額を返す
 	return purchaseAmount

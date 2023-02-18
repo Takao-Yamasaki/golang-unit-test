@@ -17,7 +17,7 @@ func TestDiscountNotApplied(t *testing.T) {
 	calculator := NewDiscountCalculator(100, 20)
 	amount := calculator.Calculate(50)
 
-	if amount != 60 {
+	if amount != 50 {
 		// Error = Log + Fail
 		// t.Logf("expected 50, got %v", amount)
 		// t.Fail()
