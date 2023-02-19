@@ -1,5 +1,7 @@
 package calculator
 
+import "errors"
+
 // 割引計算機
 type DiscountCalculator struct {
 	minimumPurchaseAmount int // 最低購入金額
@@ -7,11 +9,16 @@ type DiscountCalculator struct {
 }
 
 // 割引を適用するための最低購入額と割引額を受け取る
-func NewDiscountCalculator(minimumPurchaseAmount int, discountAmount int) *DiscountCalculator {
+func NewDiscountCalculator(minimumPurchaseAmount int, discountAmount int) (*DiscountCalculator, error) {
+
+	if minimumPurchaseAmount == 0 {
+		return &DiscountCalculator{}, errors.New("minimum purchase amount could not be zero")
+	}
+
 	return &DiscountCalculator{
 		minimumPurchaseAmount: minimumPurchaseAmount,
 		discountAmount:        discountAmount,
-	}
+	}, nil
 }
 
 func (c *DiscountCalculator) Calculate(purchaseAmount int) int {
