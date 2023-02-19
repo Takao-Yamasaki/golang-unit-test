@@ -36,5 +36,6 @@ func (c *UserSercvice) Register(user entity.User) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

@@ -44,6 +44,8 @@ func TestShouldSuccessfullyRegistrateAnUser(t *testing.T) {
 	// ここで実際の依存関係をインスタンス化できない
 	userService := NewUserService(userRepository, badWordsRepository)
 	err := userService.Register(user)
+
+	userRepository.AssertCalled(t, "Add", user)
 	assert.Nil(t, err)
 }
 
@@ -62,5 +64,7 @@ func TestShouldNotRegistrateTheUserWhenBadWordIsFound(t *testing.T) {
 	// ここで実際の依存関係をインスタンス化できない
 	userService := NewUserService(userRepository, badWordsRepository)
 	err := userService.Register(user)
+
+	userRepository.AssertNotCalled(t, "Add", user)
 	assert.Error(t, err)
 }
