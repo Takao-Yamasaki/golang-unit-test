@@ -1,15 +1,19 @@
 package calculator
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/Takao-Yamasaki/golang-unit-test/database"
+)
 
 // 割引計算機
 type DiscountCalculator struct {
-	minimumPurchaseAmount int // 最低購入金額
-	discountAmount        int // 割引額
+	minimumPurchaseAmount int                 // 最低購入金額
+	discountRepository    database.Repository // 割引額
 }
 
 // 割引を適用するための最低購入額と割引額を受け取る
-func NewDiscountCalculator(minimumPurchaseAmount int, discountAmount int) (*DiscountCalculator, error) {
+func NewDiscountCalculator(minimumPurchaseAmount int, discountRepository database.Repository) (*DiscountCalculator, error) {
 
 	if minimumPurchaseAmount == 0 {
 		return &DiscountCalculator{}, errors.New("minimum purchase amount could not be zero")
@@ -17,7 +21,7 @@ func NewDiscountCalculator(minimumPurchaseAmount int, discountAmount int) (*Disc
 
 	return &DiscountCalculator{
 		minimumPurchaseAmount: minimumPurchaseAmount,
-		discountAmount:        discountAmount,
+		discountRepository:    discountRepository,
 	}, nil
 }
 
@@ -28,7 +32,9 @@ func (c *DiscountCalculator) Calculate(purchaseAmount int) int {
 		// 乗数(自動的に丸められる)
 		multiplier := purchaseAmount / c.minimumPurchaseAmount
 
-		return purchaseAmount - (c.discountAmount * multiplier)
+		discount := c.discountRepository.FindCurrentDiscount()
+
+		return purchaseAmount - (discount * multiplier)
 	}
 	// それ以外は購入金額を返す
 	return purchaseAmount
