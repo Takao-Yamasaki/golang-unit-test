@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -35,9 +36,8 @@ func TestDiscountCalculator(t *testing.T) {
 				t.Fatalf("could not instantiate the calculator: %s", err.Error())
 			}
 			amount := calculator.Calculate(tc.purchaseAmount)
-			if amount != tc.expectedAmount {
-				t.Errorf("expected %v, got %v", tc.expectedAmount, amount)
-			}
+
+			assert.Equal(t, 2, amount)
 		})
 	}
 }
