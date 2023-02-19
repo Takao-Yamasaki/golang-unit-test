@@ -27,7 +27,7 @@ func (c *UserSercvice) Register(user entity.User) error {
 	}
 
 	for _, badWord := range badWords {
-		if strings.Contains(badWord, user.Description) {
+		if strings.Contains(user.Description, badWord) {
 			return errors.New("bad word found")
 		}
 	}
