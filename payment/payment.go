@@ -10,7 +10,10 @@ type PaymentService struct {
 	gateway                  Gateway
 }
 
-func NewPaymentService(attemptHistoryRepository database.AttemptHistory, gateway Gateway) *PaymentService {
+func NewPaymentService(
+	attemptHistoryRepository database.AttemptHistory,
+	gateway Gateway,
+) *PaymentService {
 	return &PaymentService{
 		attemptHistoryRepository: attemptHistoryRepository,
 		gateway:                  gateway,
@@ -20,13 +23,13 @@ func NewPaymentService(attemptHistoryRepository database.AttemptHistory, gateway
 // ユーザーとクレジットカードの情報をしようして支払いが許可されたか判断するメソッド
 func (c *PaymentService) IsAuthorized(user entity.User, creditCard entity.CreditCard) (bool, error) {
 	// ユーザーの前回の失敗した試行の回数を取得
-	totalAttepmts, err := c.attemptHistoryRepository.CountFailures(user)
+	totalAttempts, err := c.attemptHistoryRepository.CountFailures(user)
 	if err != nil {
 		return false, err
 	}
 
 	// 失敗した試行の合計が5回より大きい場合、falseを返す
-	if totalAttepmts > 5 {
+	if totalAttempts > 5 {
 		return false, nil
 	}
 
